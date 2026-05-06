@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "jsx": "preserve",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "useDefineForClassFields": true,
+        "allowSyntheticDefaultImports": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "types": ["node", "vite/client"],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/js/*"]
+        }
+    },
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "resources/js/**/*.tsx",
+        "resources/js/**/*.vue"
+    ],
+    "exclude": ["node_modules", "vendor", "public", "storage"]
+}

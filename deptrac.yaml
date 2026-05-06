@@ -1,0 +1,55 @@
+parameters:
+    paths:
+        - ./app
+    exclude_files:
+        - '#.*test.*#'
+
+    layers:
+        - name: Identity
+          collectors:
+              - type: classLike
+                value: ^Modules\\Identity\\.*
+
+        - name: Invoicing
+          collectors:
+              - type: classLike
+                value: ^Modules\\Invoicing\\.*
+
+        - name: BulkImport
+          collectors:
+              - type: classLike
+                value: ^Modules\\BulkImport\\.*
+
+        - name: BuyerLink
+          collectors:
+              - type: classLike
+                value: ^Modules\\BuyerLink\\.*
+
+        - name: Compliance
+          collectors:
+              - type: classLike
+                value: ^Modules\\Compliance\\.*
+
+        - name: Billing
+          collectors:
+              - type: classLike
+                value: ^Modules\\Billing\\.*
+
+        - name: AppShared
+          collectors:
+              - type: classLike
+                value: ^App\\.*
+
+    ruleset:
+        # Modules may depend on the App shell (kernel, providers, base classes)
+        # but NEVER on each other. Cross-module communication goes through
+        # events or explicit Application service contracts under App\Contracts.
+        Identity: [AppShared]
+        Invoicing: [AppShared]
+        BulkImport: [AppShared, Invoicing]
+        BuyerLink: [AppShared, Invoicing]
+        Compliance: [AppShared, Invoicing]
+        Billing: [AppShared, Identity]
+        AppShared: []
+
+    skip_violations: {}
