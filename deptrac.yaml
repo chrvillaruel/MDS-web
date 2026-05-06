@@ -1,0 +1,61 @@
+parameters:
+    paths:
+        - ./app
+    exclude_files:
+        - '#.*test.*#'
+
+    layers:
+        - name: Identity
+          collectors:
+              - type: classLike
+                value: ^Modules\\Identity\\.*
+
+        - name: Invoicing
+          collectors:
+              - type: classLike
+                value: ^Modules\\Invoicing\\.*
+
+        - name: BulkImport
+          collectors:
+              - type: classLike
+                value: ^Modules\\BulkImport\\.*
+
+        - name: BuyerLink
+          collectors:
+              - type: classLike
+                value: ^Modules\\BuyerLink\\.*
+
+        - name: Compliance
+          collectors:
+              - type: classLike
+                value: ^Modules\\Compliance\\.*
+
+        - name: Billing
+          collectors:
+              - type: classLike
+                value: ^Modules\\Billing\\.*
+
+        - name: AppShared
+          collectors:
+              - type: classLike
+                value: ^App\\.*
+
+    ruleset:
+        # Modules may depend on the App shell (kernel, providers, base classes)
+        # but NEVER on each other directly. The App layer is the orchestration
+        # shell and may know about every module (to wire policies, the auth
+        # User <-> Seller relation, route registration, etc.). Cross-module
+        # *runtime* communication still goes through events or explicit
+        # service contracts under App\Contracts.
+        # Identity owns the tenant concept (Seller). All other modules may
+        # depend on Identity because every business model belongs to a seller.
+        # Modules still may not depend on each other beyond this baseline.
+        Identity: [AppShared]
+        Invoicing: [AppShared, Identity]
+        BulkImport: [AppShared, Identity, Invoicing]
+        BuyerLink: [AppShared, Identity, Invoicing]
+        Compliance: [AppShared, Identity, Invoicing]
+        Billing: [AppShared, Identity]
+        AppShared: [Identity, Invoicing, BulkImport, BuyerLink, Compliance, Billing]
+
+    skip_violations: {}
