@@ -6,6 +6,7 @@
         "build": "vite build",
         "dev": "vite",
         "type-check": "vue-tsc --noEmit -p tsconfig.json",
+        "test:e2e": "playwright test",
         "prepare": "husky"
     },
     "dependencies": {
@@ -22,6 +23,7 @@
     "devDependencies": {
         "@commitlint/cli": "^19.0.0",
         "@commitlint/config-conventional": "^19.0.0",
+        "@playwright/test": "^1.48.0",
         "@tailwindcss/vite": "^4.0.0",
         "@types/node": "^22.10.0",
         "@vitejs/plugin-vue": "^6.0.0",

@@ -1,0 +1,41 @@
+{
+    "$schema": "https://laravel.com/schema/cloud.json",
+    "name": "mds",
+    "region": "ap-southeast-1",
+    "environments": {
+        "staging": {
+            "branch": "staging",
+            "domains": ["staging.mds.ph"],
+            "php_version": "8.3",
+            "node_version": "22",
+            "build": [
+                "composer install --no-dev --prefer-dist --no-interaction --no-progress",
+                "npm ci",
+                "npm run build"
+            ],
+            "deploy": [
+                "php artisan migrate --force",
+                "php artisan config:cache",
+                "php artisan route:cache",
+                "php artisan event:cache"
+            ]
+        },
+        "production": {
+            "branch": "main",
+            "domains": ["app.mds.ph"],
+            "php_version": "8.3",
+            "node_version": "22",
+            "build": [
+                "composer install --no-dev --prefer-dist --no-interaction --no-progress",
+                "npm ci",
+                "npm run build"
+            ],
+            "deploy": [
+                "php artisan migrate --force",
+                "php artisan config:cache",
+                "php artisan route:cache",
+                "php artisan event:cache"
+            ]
+        }
+    }
+}
