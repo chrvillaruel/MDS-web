@@ -1,0 +1,83 @@
+{
+    "schema_version": "v1",
+    "eis_unique_id": "01HABCDEF000000000000000000",
+    "invoice_type": "sales_invoice",
+    "serial": {
+        "number": 42,
+        "reset_counter": 0,
+        "formatted": "0000000042-00"
+    },
+    "issued_at": "2026-06-15T10:30:00+08:00",
+    "vat_mode": "inclusive",
+    "currency": "PHP",
+    "seller": {
+        "registered_name": "Acme Trading Co.",
+        "business_style": "Acme",
+        "tin": "123456789",
+        "branch_code": "00000",
+        "address": "123 Rizal Ave, Manila",
+        "vat_status": "vat_registered",
+        "bir_rdo_code": "044",
+        "accreditation_number": "ACC-2026-001",
+        "machine_identification_number": "MIN-001",
+        "software_license_number": "SLN-001"
+    },
+    "branch": {
+        "code": "HQ",
+        "name": "Head Office",
+        "address": "123 Rizal Ave"
+    },
+    "buyer": {
+        "registered_name": "Juan dela Cruz",
+        "business_style": null,
+        "tin": "987654321",
+        "address": "5 Mabini St",
+        "email": "juan@example.com"
+    },
+    "lines": [
+        {
+            "line_number": 1,
+            "description": "Widget",
+            "quantity": "2.0000",
+            "unit": "pc",
+            "unit_price": "500.00",
+            "classification": "vatable",
+            "line_net": "892.86",
+            "line_vat": "107.14",
+            "line_total": "1000.00"
+        },
+        {
+            "line_number": 2,
+            "description": "Senior pack",
+            "quantity": "1.0000",
+            "unit": "pc",
+            "unit_price": "300.00",
+            "classification": "vat_exempt",
+            "line_net": "300.00",
+            "line_vat": "0.00",
+            "line_total": "300.00"
+        },
+        {
+            "line_number": 3,
+            "description": "Export",
+            "quantity": "1.0000",
+            "unit": "pc",
+            "unit_price": "1000.00",
+            "classification": "zero_rated",
+            "line_net": "1000.00",
+            "line_vat": "0.00",
+            "line_total": "1000.00"
+        }
+    ],
+    "totals": {
+        "vatable_sales": "892.86",
+        "vat_exempt_sales": "300.00",
+        "zero_rated_sales": "1000.00",
+        "vat_amount": "107.14",
+        "subtotal": "2192.86",
+        "total_amount": "2300.00",
+        "has_zero_rated_sale": true
+    },
+    "supersedes": null,
+    "note": null
+}
