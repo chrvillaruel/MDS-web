@@ -1,0 +1,131 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mds.softdev.digital/schemas/eis-payload-v1.json",
+    "title": "MDS EIS Canonical Payload v1",
+    "description": "RMO 24-2023 canonical payload for an issued invoice. Frozen at issuance.",
+    "type": "object",
+    "required": [
+        "schema_version", "eis_unique_id", "invoice_type", "serial", "issued_at",
+        "vat_mode", "currency", "seller", "branch", "lines", "totals"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "schema_version": { "const": "v1" },
+        "eis_unique_id": { "type": "string", "minLength": 1 },
+        "invoice_type": {
+            "type": "string",
+            "enum": ["sales_invoice", "official_receipt", "credit_note", "debit_note"]
+        },
+        "serial": {
+            "type": "object",
+            "required": ["number", "reset_counter", "formatted"],
+            "additionalProperties": false,
+            "properties": {
+                "number": { "type": "integer", "minimum": 1 },
+                "reset_counter": { "type": "integer", "minimum": 0 },
+                "formatted": { "type": "string" }
+            }
+        },
+        "issued_at": { "type": "string", "format": "date-time" },
+        "vat_mode": { "type": "string", "enum": ["inclusive", "exclusive"] },
+        "currency": { "const": "PHP" },
+        "seller": {
+            "type": "object",
+            "required": ["registered_name", "tin", "branch_code", "address", "vat_status"],
+            "properties": {
+                "registered_name": { "type": "string" },
+                "business_style": { "type": ["string", "null"] },
+                "tin": { "type": "string" },
+                "branch_code": { "type": "string" },
+                "address": { "type": "string" },
+                "vat_status": { "type": "string" },
+                "bir_rdo_code": { "type": ["string", "null"] },
+                "accreditation_number": { "type": ["string", "null"] },
+                "machine_identification_number": { "type": ["string", "null"] },
+                "software_license_number": { "type": ["string", "null"] }
+            }
+        },
+        "branch": {
+            "type": "object",
+            "required": ["code", "name", "address"],
+            "properties": {
+                "code": { "type": "string" },
+                "name": { "type": "string" },
+                "address": { "type": "string" }
+            }
+        },
+        "buyer": {
+            "oneOf": [
+                { "type": "null" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "registered_name": { "type": ["string", "null"] },
+                        "business_style": { "type": ["string", "null"] },
+                        "tin": { "type": ["string", "null"] },
+                        "address": { "type": ["string", "null"] },
+                        "email": { "type": ["string", "null"] }
+                    }
+                }
+            ]
+        },
+        "lines": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "required": [
+                    "line_number", "description", "quantity", "unit", "unit_price",
+                    "classification", "line_net", "line_vat", "line_total"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "line_number": { "type": "integer", "minimum": 1 },
+                    "description": { "type": "string" },
+                    "quantity": { "type": "string", "pattern": "^-?\\d+\\.\\d{4}$" },
+                    "unit": { "type": "string" },
+                    "unit_price": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                    "classification": {
+                        "type": "string",
+                        "enum": ["vatable", "zero_rated", "vat_exempt"]
+                    },
+                    "line_net": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                    "line_vat": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                    "line_total": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" }
+                }
+            }
+        },
+        "totals": {
+            "type": "object",
+            "required": [
+                "vatable_sales", "vat_exempt_sales", "zero_rated_sales",
+                "vat_amount", "subtotal", "total_amount", "has_zero_rated_sale"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "vatable_sales": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                "vat_exempt_sales": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                "zero_rated_sales": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                "vat_amount": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                "subtotal": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                "total_amount": { "type": "string", "pattern": "^-?\\d+\\.\\d{2}$" },
+                "has_zero_rated_sale": { "type": "boolean" }
+            }
+        },
+        "supersedes": {
+            "oneOf": [
+                { "type": "null" },
+                {
+                    "type": "object",
+                    "required": ["eis_unique_id", "serial"],
+                    "additionalProperties": false,
+                    "properties": {
+                        "eis_unique_id": { "type": "string" },
+                        "serial": { "type": ["string", "null"] }
+                    }
+                }
+            ]
+        },
+        "note": { "type": ["string", "null"] }
+    }
+}
